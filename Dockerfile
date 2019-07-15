@@ -1,10 +1,10 @@
-FROM maven:3 as builder
+FROM maven:3-jdk-8 as builder
 MAINTAINER matt.brewster@base2s.com
 COPY . /build
 WORKDIR /build
 RUN mvn versions:set -DnewVersion=docker; mvn clean package
 
-FROM sonatype/nexus3:3.16.1
+FROM sonatype/nexus3:latest
 USER root
 RUN mkdir -p /opt/sonatype/nexus/system/com/larscheidschmitzhermes/nexus3-github-oauth-plugin/docker/
 COPY --from=builder /build/target/nexus3-github-oauth-plugin-docker.jar /opt/sonatype/nexus/system/com/larscheidschmitzhermes/nexus3-github-oauth-plugin/docker/
